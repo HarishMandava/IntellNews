@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='styles/styles.css')}}"> 
+   </head>
+    <body>
+        <h1 class="h1">Welcome to Intelligent News</h1>
+        {% for message in get_flashed_messages() %}
+            <p><b>Error</b>: {{ message }}</p>
+        {% endfor %}
+        {% if current_user.is_authenticated %}
+            <h2>Hi, {{ current_user.nickname }}!</h2>
+            <p><a href="{{ url_for('logout') }}">Logout</a></p>
+        {% else %}
+            <h2>Please log-in with Facebook or Twitter</h2>
+        <div class="p1">
+        <span class="p2" style="text-align:center;">
+            <strong>LOGIN</strong>
+            </br>
+            </br>
+            </br>
+            </br>
+            </br>
+            </br>
+            <p><a href="{{ url_for('oauth_authorize', provider='facebook') }}"><button class="button button1">Login with Facebook</button></a></p>
+            <p><a href="{{ url_for('oauth_authorize', provider='twitter') }}"><button class="button button2">Login with Twitter</button></a></p>
+	        </div>
+        </span>
+           {% endif %}
+    </body>
+</html>
+
