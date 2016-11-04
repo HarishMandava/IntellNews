@@ -4,17 +4,19 @@ from flask_login import LoginManager, UserMixin, login_user, logout_user,\
     current_user
 from oauth import OAuthSignIn
 import config
+import hack
+global titles
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'top secret!'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 app.config['OAUTH_CREDENTIALS'] = {
     'facebook': {
-        'id': '550237518504458',
-        'secret': '1953cfc77cc31b32679eae4fb7974a60'
+        'id':config.fb_id,
+        'secret':config.fb_key
     },
     'twitter': {
-        'id': config.king,
-        'secret': config.queen
+        'id': config.twitter_id,
+        'secret': config.twitter_key
     }
 }
 
@@ -30,7 +32,6 @@ class User(UserMixin, db.Model):
     nickname = db.Column(db.String(64), nullable=False)
     email = db.Column(db.String(64), nullable=True)
 
-
 @lm.user_loader
 def load_user(id):
     return User.query.get(int(id))
@@ -38,7 +39,8 @@ def load_user(id):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    tem=hack.titles
+    return render_template('index.html',titles=tem,urls=hack.urls)
 
 
 @app.route('/logout')
@@ -72,8 +74,6 @@ def oauth_callback(provider):
     login_user(user, True)
     return redirect(url_for('index'))
 
-
 if __name__ == '__main__':
     db.create_all()
-    app.run(host='0.0.0.0')
-
+    app.run(debug=True)
