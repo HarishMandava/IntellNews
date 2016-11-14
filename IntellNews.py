@@ -1,12 +1,17 @@
 from flask import Flask, redirect, url_for, render_template
 from flask_sqlalchemy import SQLAlchemy
+from flask.ext.sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user,\
     current_user
 from oauth import OAuthSignIn
+import os
 import config
 import hack
 global titles
+
 app = Flask(__name__)
+app.config.from_object('config')
+
 app.config['SECRET_KEY'] = 'top secret!'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 app.config['OAUTH_CREDENTIALS'] = {
@@ -20,17 +25,14 @@ app.config['OAUTH_CREDENTIALS'] = {
     }
 }
 
+# Set base directory for database
+basedir = os.path.abspath(os.path.dirname(__file__))
 db = SQLAlchemy(app)
+from app import models # models refers to DB models
+
 lm = LoginManager(app)
 lm.login_view = 'index'
 
-
-class User(UserMixin, db.Model):
-    __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True)
-    social_id = db.Column(db.String(64), nullable=False, unique=True)
-    nickname = db.Column(db.String(64), nullable=False)
-    email = db.Column(db.String(64), nullable=True)
 
 @lm.user_loader
 def load_user(id):
