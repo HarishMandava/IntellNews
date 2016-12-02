@@ -1,6 +1,5 @@
 from flask import Flask, redirect, url_for, render_template
 from flask_sqlalchemy import SQLAlchemy
-from flask.ext.sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user,\
     current_user
 from oauth import OAuthSignIn
@@ -42,6 +41,7 @@ def load_user(id):
 @app.route('/')
 def index():
     tem=hack.titles
+    hack.processTopArticles()
     return render_template('index.html',titles=tem,urls=hack.urls)
 
 

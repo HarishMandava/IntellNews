@@ -19,8 +19,10 @@ class Article(db.Model):
 	__tablename__ = 'article'
 	id = db.Column(db.Integer, primary_key = True)
 	hacker_id = db.Column(db.Integer)
-	keywords = db.Column(db.String(200))
+	title = db.Column(db.String(200))
 	url = db.Column(db.String(500))
+	keywords = db.Column(db.String(2000))
+	date = db.Column(db.Date)
 	#preferences = db.relationship('Preference', backref='article', lazy='dynamic')
 
 	# Define how to print article instances
@@ -33,4 +35,3 @@ class Preference(db.Model):
 	user_id = db.column(db.Integer, db.ForeignKey('user.id'))
 	article_id = db.column(db.Integer, db.ForeignKey('article.id'))
 	like = db.Column(db.Boolean)
-
