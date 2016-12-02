@@ -28,7 +28,7 @@ app.config['OAUTH_CREDENTIALS'] = {
 # Set base directory for database
 basedir = os.path.abspath(os.path.dirname(__file__))
 db = SQLAlchemy(app)
-from app import models # models refers to DB models
+from app.models import * # models refers to DB models
 
 lm = LoginManager(app)
 lm.login_view = 'index'

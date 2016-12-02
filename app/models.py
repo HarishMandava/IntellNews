@@ -1,8 +1,7 @@
 # File contains SQLite DB model for tables
 
-from app import db
-from flask_login import LoginManager, UserMixin, login_user, logout_user,\
-    current_user
+from IntellNews import db
+from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user
 
 class User(UserMixin, db.Model):
     __tablename__ = 'user'
