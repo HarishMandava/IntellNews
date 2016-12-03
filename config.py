@@ -1,21 +1,10 @@
 import os
-
-# Grabs folder where script runs
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-# True for error and debug information
-DEBUG = False
+fb_id="550237518504458"
+fb_key="1953cfc77cc31b32679eae4fb7974a60"
+twitter_id = 'fu8EtaibKfPcyGqxCp6x0RhEm'
+twitter_key = 'unpjE6PTGz5GNDpK5chU0OTotqEiOkPMwTY9q6pOv9cAMR5vrR'
 
-#ADMINS = frozenset(['joshgarlitos@gmail.com'])
-#SECRET_KEY = 'This string will be replaced with a proper key in production.'
-
-# Database Config for Flask-SQLAlchemy
-SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db') # DB path
-SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository') # Storage for migration files
-DATABASE_CONNECT_OPTIONS = {}
-
-#THREADS_PER_PAGE = 8
-
-# Web Form Protection Against Post-Fraud
-# WTF_CSRF_ENABLED = True
-# WTF_CSRF_SECRET_KEY = ""
+SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
+SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')

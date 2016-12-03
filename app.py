@@ -13,7 +13,7 @@ app = Flask(__name__)
 app.config.from_object('config')
 db = SQLAlchemy(app)
 
-from app import models
+from app.models import *
 
 app.config['SECRET_KEY'] = 'top secret!'
 app.config['OAUTH_CREDENTIALS'] = {

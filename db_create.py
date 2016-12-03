@@ -1,7 +1,8 @@
 #!flask/bin/python
 
-# Executing this file creates the SQLite db
-# File imports pathnames from config.py
+""" Executing this file creates the SQLite db
+File imports pathnames from config.py 
+"""
 
 from migrate.versioning import api
 from config import SQLALCHEMY_DATABASE_URI

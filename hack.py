@@ -6,6 +6,7 @@ from hackernews import HackerNews
 import newspaper
 import datetime
 from app.models import *
+from app import db
 
 global titles
 titles=list()
