@@ -4,7 +4,6 @@
         <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='styles/styles1.css')}}"> 
    </head>
     <body>
-        <h1 class="h1">Intelligent  News</h1>
         <meta charset="utf-8">
         <meta name="description" content="Intelligent News: Finding Articles that Matter to You">
         <title>Intelligent News</title>
@@ -29,34 +28,44 @@
         </div>
 
         {% for message in get_flashed_messages() %}
-            <p><b>Error</b>: {{ message }}</p>
+            <p><b>Message</b>: {{ message }}</p>
         {% endfor %}
         {% if current_user.is_authenticated %}
-            <h2>Hi, {{ current_user.nickname }}!</h2>
+            <h3>Hi, {{ current_user.nickname }}! Here are some articles for you to read:</h3>
             <p><a href="{{ url_for('logout') }}">Logout</a></p>
-        <div class="row marketing">
-        <div class="col-lg-6">
-          <h4>Article #1</h4>
-          <p>{{titles[0]}} </br> <a href={{urls[0]}} target="_blank"> click here</a> </br>  <a href="like" > like </a><a href="dislike"> &nbsp dislike </a></p>
 
-          <h4>Article #2</h4>
-          <p>{{titles[1]}} </br> <a href={{urls[1]}} target="_blank"> click here</a> </br><a href="like"> like </a><a href="dislike">&nbsp dislike </a></p>
 
-          <h4>Article #3</h4>
-          <p>{{titles[2]}} </br> <a href={{urls[2]}} target="_blank"> click here</a> </br><a href="like"> like </a><a href="dislike">&nbsp dislike </a></p>
-        </div>
+          <div class="row marketing">
+          <div class="col-lg-6">
+            <h4><a href={{urls[0]}} target="_blank">{{titles[0]}}</a></h4>
+            <h5><b>Topics -- </b>{{keywords[0]}}</h5>
+            <a href="{{ url_for('like', articleId = ids[0]) }}" >LIKE</a></p>
 
-        <div class="col-lg-6">
-          <h4>Article #4</h4>
-          <p>{{titles[3]}} </br> <a href={{urls[3]}} target="_blank"> click here</a> </br><a href="like"> like </a><a href="dislike">&nbsp dislike </a></p>
+            <h4><a href={{urls[1]}} target="_blank">{{titles[1]}}</a></h4>
+            <h5><b>Topics -- </b>{{keywords[1]}}</h5>
+            <a href="{{ url_for('like', articleId = ids[1]) }}" >LIKE</a></p>
 
-          <h4>Article #5</h4>
-          <p>{{titles[4]}} </br> <a href={{urls[4]}} target="_blank"> click here</a> </br><a href="like"> like </a><a href="dislike">&nbsp dislike </a></p>
+            <h4><a href={{urls[2]}} target="_blank">{{titles[2]}}</a> </h4>
+            <h5><b>Topics -- </b>{{keywords[2]}}</h5>
+            <a href="{{ url_for('like', articleId = ids[2]) }}" >LIKE</a></p>
+          </div>
 
-          <h4>Article #6</h4>
-          <p>{{titles[5]}} </br> <a href={{urls[5]}} target="_blank"> click here</a> </br><a href="like"> like </a><a href="dislike"> &nbsp dislike </a></p>
-        </div>
+          <div class="col-lg-6">
+
+            <h4><a href={{urls[3]}} target="_blank">{{titles[3]}}</a></h4>
+            <h5><b>Topics -- </b>{{keywords[3]}}</h5>
+            <a href="{{ url_for('like', articleId = ids[3]) }}" >LIKE</a></p>
+
+            <h4><a href={{urls[4]}} target="_blank">{{titles[4]}}</a></h4>
+            <h5><b>Topics -- </b>{{keywords[4]}}</h5>
+            <a href="{{ url_for('like', articleId = ids[4]) }}" >LIKE</a></p>
+
+            <h4><a href={{urls[5]}} target="_blank">{{titles[5]}}</a> </h4>
+            <h5><b>Topics -- </b>{{keywords[5]}}</h5>
+            <a href="{{ url_for('like', articleId = ids[5]) }}" >LIKE</a></p>
+          </div>
       </div>
+
 
     {% else %}      
         <div class="p1">

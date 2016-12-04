@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, render_template
+from flask import Flask, redirect, url_for, render_template, flash, request, g
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user,\
     current_user
@@ -35,12 +35,30 @@ lm.login_view = 'index'
 def load_user(id):
     return User.query.get(int(id))
 
+@app.before_request
+def before_request():
+    g.user = current_user
 
 @app.route('/')
 def index():
     tem=hack.titles
+
+    titles = []
+    urls = []
+    hacker_ids = []
+    ids = []
+    keywords = []
+
     hack.processTopArticles()
-    return render_template('index.html',titles=tem,urls=hack.urls)
+    articles = g.user.unliked_articles()
+    for article in articles:
+        ids.append(article.id)
+        titles.append(article.title)
+        urls.append(article.url)
+        hacker_ids.append(article.url)
+        keywords.append(article.keywords)
+
+    return render_template('index.html', articles=articles, keywords=keywords, ids=ids,titles=titles,urls=urls,hacker_ids=hacker_ids)
 
 
 @app.route('/logout')
@@ -73,6 +91,38 @@ def oauth_callback(provider):
         db.session.commit()
     login_user(user, True)
     return redirect(url_for('index'))
+
+
+@app.route('/like/<articleId>')
+def like(articleId):
+    article = Article.query.filter_by(id = articleId).first()
+    if article is None:
+        flash('Article not found')
+        return redirect(url_for('index'))
+    newLike = g.user.like(article)
+    if newLike is None:
+        flash('Cannot like article')
+        return redirect(url_for('index'))
+    db.session.add(newLike)
+    db.session.commit()
+    flash('You liked the article')
+    return redirect(url_for('index'))
+
+@app.route('/unlike/<articleId>')
+def unlike(articleId):
+    article = Article.query.filter_by(id = articleId).first()
+    if article is None:
+        flash('Article not found')
+        return redirect(url_for('index'))
+    newUnlike = g.user.unlike(article)
+    if newUnlike is None:
+        flash('Cannot unlike article')
+        return redirect(url_for('index'))
+    db.session.add(newUnlike)
+    db.session.commit()
+    flash('You unliked the article')
+    return redirect(url_for('index'))
+
 
 if __name__ == '__main__':
     db.create_all()
