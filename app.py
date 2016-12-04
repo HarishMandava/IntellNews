@@ -50,15 +50,16 @@ def index():
     keywords = []
 
     hack.processTopArticles()
-    articles = g.user.unliked_articles()
-    for article in articles:
-        ids.append(article.id)
-        titles.append(article.title)
-        urls.append(article.url)
-        hacker_ids.append(article.url)
-        keywords.append(article.keywords)
+    if current_user.is_authenticated:
+        articles = g.user.unliked_articles()
+        for article in articles:
+            ids.append(article.id)
+            titles.append(article.title)
+            urls.append(article.url)
+            hacker_ids.append(article.url)
+            keywords.append(article.keywords)
 
-    return render_template('index.html', articles=articles, keywords=keywords, ids=ids,titles=titles,urls=urls,hacker_ids=hacker_ids)
+    return render_template('index.html', keywords=keywords, ids=ids,titles=titles,urls=urls,hacker_ids=hacker_ids)
 
 
 @app.route('/logout')
