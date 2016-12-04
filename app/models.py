@@ -75,8 +75,8 @@ class User(UserMixin, db.Model):
     def unliked_articles(self):
     	""" Returns articles that a user has not liked
     	"""
-    	return Article.query.outerjoin(likes,
-    		(likes.c.article_id == Article.id)).filter((likes.c.user_id == None) | (likes.c.user_id != self.id))
+    	return Article.query.outerjoin(likes, (likes.c.article_id == Article.id)).filter((likes.c.user_id == None) | (likes.c.user_id != self.id))
+
 
     # Define how to print users instances
     def __repr__(self):
@@ -90,6 +90,7 @@ class Article(db.Model):
     url = db.Column(db.String(500))
     keywords = db.Column(db.String(2000))
     date = db.Column(db.Date) # Date retrieved from Hacker News by app
+    similar_articles = db.Column(db.String(2000))
 
     # Define how to print article instances
     def __repr__(self):

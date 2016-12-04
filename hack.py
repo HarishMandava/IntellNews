@@ -49,7 +49,7 @@ def processTopArticles():
 	                    article = Article.query.filter_by(hacker_id=hacker_id).first()
 	                    if not article: # if not already stored, then store it
 	                        article = Article(hacker_id=hacker_id, title=title, 
-	                            url=url, keywords=keywords, date=today)
+	                            url=url, keywords=keywords, date=today, similar_article='')
 	                        db.session.add(article)
 	                        db.session.commit()
 
