@@ -6,6 +6,7 @@ from oauth import OAuthSignIn
 import os
 import config
 import hack
+import ast
 global titles
 
 # Initialization of app and database
@@ -49,7 +50,7 @@ def index():
     ids = []
     keywords = []
 
-    hack.processTopArticles()
+    #hack.processTopArticles()
     if current_user.is_authenticated:
         articles = g.user.unliked_articles()
         for article in articles:
@@ -97,13 +98,29 @@ def oauth_callback(provider):
 @app.route('/like/<articleId>')
 def like(articleId):
     article = Article.query.filter_by(id = articleId).first()
+    similar_articles = ast.literal_eval(article.similar_articles)
+    flash(similar_articles)
+    sim_art_list = []
+
+    # Pull any articles that are similar to the one liked
+    for article_tuple in similar_articles: # article_tuple -> (sim score, articleId)
+        if int(article_tuple[0]) > 0:
+            similarArticleId = int(article_tuple[1])
+        if sim_art_list: # if not empty
+            similarArticleId = sim_art_list[1]
+            similar_article = Article.query.filter_by(id = similarArticleId).first()
+            title = similar_article.title
+            url = similar_article.url
+            flash(url)
+
+
     if article is None:
         flash('Article not found')
         return redirect(url_for('index'))
     newLike = g.user.like(article)
     if newLike is None:
         flash('Cannot like article')
-        return redirect(url_for('index'))
+        return redirect(url_for('index'))    
     db.session.add(newLike)
     db.session.commit()
     flash('You liked the article')

@@ -4,6 +4,8 @@ from scipy.spatial.distance import cosine
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
+from sqlalchemy import update
+from app.models import *
 import os
 import config
 
@@ -21,7 +23,6 @@ class ContentEngine(object):
 
 		vector = CountVectorizer()
 		matrix = vector.fit_transform(self.articleDF.keywords)
-		print(matrix)
 		cosine_similarities = linear_kernel(matrix, matrix)
 		
 
@@ -31,14 +32,14 @@ class ContentEngine(object):
 			'similar_articles' column equal to the list of similar items.
 			Stores as str([(similarity score, articleId),...])
 			"""
-			similar_indices = cosine_similarities[idx].argsort()[:-10:-1]
+			similar_indices = cosine_similarities[idx].argsort()[:-4:-1] # Change -2 to -n for n number of similar articles to be stored
 			similar_items = [(cosine_similarities[idx][i], self.articleDF.id[i]) for i in similar_indices]
+			similar_items = str(similar_items[1:]) # [1:] beacuse the first item is always same article as self
 
-			self.articleDF.set_value(idx,'similar_articles',str(similar_items[1:]))
-			
-		print(self.articleDF)
-		self.articleDF.to_csv('test.csv')
-		self.articleDF.to_sql('article',config.SQLALCHEMY_DATABASE_URI,if_exists='replace')
+			article = Article.query.filter(Article.id == row.id).first()
+			article.similar_articles = similar_items
+			db.session.commit()
+
 
 if __name__ == '__main__':
 	contentEngine = ContentEngine()
