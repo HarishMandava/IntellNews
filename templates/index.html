@@ -28,11 +28,11 @@
         </div>
 
         {% for message in get_flashed_messages() %}
-            <p><b>Message</b>: {{ message }}</p>
+            <p><b>Message</b>: {{ message | safe }}</p>
         {% endfor %}
         {% if current_user.is_authenticated %}
             <h3>Hi, {{ current_user.nickname }}! Here are some articles for you to read:</h3>
-            <p><a href="{{ url_for('logout') }}">Logout</a></p>
+            <p><left><a href="{{ url_for('logout') }}">Logout</a><left></p>
 
 
           <div class="row marketing">

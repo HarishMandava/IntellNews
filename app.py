@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, render_template, flash, request, g
+from flask import Flask, redirect, url_for, render_template, flash, request, g, Markup
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user,\
     current_user
@@ -30,6 +30,7 @@ app.config['OAUTH_CREDENTIALS'] = {
 
 lm = LoginManager(app)
 lm.login_view = 'index'
+hack.processTopArticles() # This pulls in top articles before localhost can come up
 
 
 @lm.user_loader
@@ -39,6 +40,7 @@ def load_user(id):
 @app.before_request
 def before_request():
     g.user = current_user
+
 
 @app.route('/')
 def index():
@@ -50,7 +52,6 @@ def index():
     ids = []
     keywords = []
 
-    #hack.processTopArticles()
     if current_user.is_authenticated:
         articles = g.user.unliked_articles()
         for article in articles:
@@ -99,21 +100,15 @@ def oauth_callback(provider):
 def like(articleId):
     article = Article.query.filter_by(id = articleId).first()
     similar_articles = ast.literal_eval(article.similar_articles)
-    flash(similar_articles)
-    sim_art_list = []
 
     # Pull any articles that are similar to the one liked
-    for article_tuple in similar_articles: # article_tuple -> (sim score, articleId)
-        if int(article_tuple[0]) > 0:
-            similarArticleId = int(article_tuple[1])
-        if sim_art_list: # if not empty
-            similarArticleId = sim_art_list[1]
-            similar_article = Article.query.filter_by(id = similarArticleId).first()
-            title = similar_article.title
-            url = similar_article.url
-            flash(url)
-
-
+    if int(similar_articles[0][0]) > 0: # article_tuple -> (sim score, articleId)
+        similarArticleId = int(similar_articles[0][1])
+        similar_article = Article.query.filter_by(id = similarArticleId).first()
+        similar_title = similar_article.title
+        similar_url = similar_article.url
+        similar_message = 'Here is another article you might like: <a href=' + similar_url + '>' + similar_title + '</a>'
+        flash(Markup(similar_message))
     if article is None:
         flash('Article not found')
         return redirect(url_for('index'))
@@ -123,7 +118,6 @@ def like(articleId):
         return redirect(url_for('index'))    
     db.session.add(newLike)
     db.session.commit()
-    flash('You liked the article')
     return redirect(url_for('index'))
 
 @app.route('/unlike/<articleId>')

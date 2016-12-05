@@ -13,11 +13,11 @@ global titles
 titles=list()
 urls=list()
 x=HackerNews()
-i=0
+"""i=0
 for id in x.top_stories(limit=6):
     titles.append(x.get_item(id).title)
     urls.append(x.get_item(id).url)
-    i += 1
+    i += 1"""
 
 
 def processTopArticles():
