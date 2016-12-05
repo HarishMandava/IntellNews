@@ -21,17 +21,16 @@ for id in x.top_stories(limit=6):
     i += 1
 """
 
-def processTopArticles():
+def processTopArticles(limit = 5):
     """ Grab top 6 articles and analyze their content
     """
     articleInsertList = []
     today = datetime.datetime.utcnow() # Grab current date for storing in DB
 
-    for id in x.top_stories(limit = 10):    # Limit is # of stories
+    for id in x.top_stories(limit):    # Limit is # of stories
         hacker_id = id
         title = x.get_item(id).title
         url = x.get_item(id).url
-        print(url)
 
         # Use Newspaper to analyze keywords
         article = Article.query.filter_by(hacker_id = hacker_id).first()

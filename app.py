@@ -109,7 +109,8 @@ def like(articleId):
         similar_article = Article.query.filter_by(id = similarArticleId).first()
         similar_title = similar_article.title
         similar_url = similar_article.url
-        similar_message = 'Here is another article you might like: <a href=' + similar_url + '>' + similar_title + '</a>'
+        similar_keywords = similar_article.keywords
+        similar_message = 'Here is another article you might like: <a href=' + similar_url + '>' + similar_title + '</a><br><h6><b>Topcs: </b>' + similar_keywords + '</h6>'
         flash(Markup(similar_message))
     if article is None:
         flash('Article not found')
