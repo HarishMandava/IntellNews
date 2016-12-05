@@ -5,9 +5,10 @@ of the articles from HackerNews
 from hackernews import HackerNews
 import newspaper
 import datetime
-from app.models import *
 from app import db
+from app.models import *
 import engines
+
 
 global titles
 titles=list()
@@ -17,8 +18,8 @@ x=HackerNews()
 for id in x.top_stories(limit=6):
     titles.append(x.get_item(id).title)
     urls.append(x.get_item(id).url)
-    i += 1"""
-
+    i += 1
+"""
 
 def processTopArticles():
     """ Grab top 6 articles and analyze their content
@@ -26,14 +27,15 @@ def processTopArticles():
     articleInsertList = []
     today = datetime.datetime.utcnow() # Grab current date for storing in DB
 
-    for id in x.top_stories(limit = 30):    # Limit is # of stories
+    for id in x.top_stories(limit = 10):    # Limit is # of stories
         hacker_id = id
         title = x.get_item(id).title
         url = x.get_item(id).url
+        print(url)
 
         # Use Newspaper to analyze keywords
         article = Article.query.filter_by(hacker_id = hacker_id).first()
-        if article is None:
+        if article is None and url is not None:
             article = newspaper.Article(url)
             article.download() # Must download before parse
             if article.html:

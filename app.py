@@ -8,6 +8,7 @@ import config
 import hack
 import ast
 global titles
+import engines
 
 # Initialization of app and database
 app = Flask(__name__)
@@ -30,7 +31,6 @@ app.config['OAUTH_CREDENTIALS'] = {
 
 lm = LoginManager(app)
 lm.login_view = 'index'
-hack.processTopArticles() # This pulls in top articles before localhost can come up
 
 
 @lm.user_loader
@@ -53,13 +53,15 @@ def index():
     keywords = []
 
     if current_user.is_authenticated:
+        hack.processTopArticles()
         articles = g.user.unliked_articles()
-        for article in articles:
-            ids.append(article.id)
-            titles.append(article.title)
-            urls.append(article.url)
-            hacker_ids.append(article.url)
-            keywords.append(article.keywords)
+        if articles:
+	        for article in articles:
+	            ids.append(article.id)
+	            titles.append(article.title)
+	            urls.append(article.url)
+	            hacker_ids.append(article.url)
+	            keywords.append(article.keywords)
 
     return render_template('index.html', keywords=keywords, ids=ids,titles=titles,urls=urls,hacker_ids=hacker_ids)
 
