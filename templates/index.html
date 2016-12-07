@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='styles/styles1.css')}}"> 
-   </head>
+        <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='styles/styles.css')}}"> 
+    </head>
     <body>
-        <meta charset="utf-8">
+    <h1 class="h1">Intelligent  News</h1>
+    <meta charset="utf-8">
         <meta name="description" content="Intelligent News: Finding Articles that Matter to You">
         <title>Intelligent News</title>
         
@@ -12,16 +13,16 @@
 
     <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
 
-    </head>
-    <body>
+    
+    
 
         <div class="container">
               <div class="header">
                 <nav>
                   <ul class="nav nav-pills pull-right">
-                    <li role="presentation" class="active"><a href="#">Home</a></li>
-                    <li role="presentation"><a href="#">About</a></li>
-                <li role="presentation"><a href="/showSignUp">Contact</a></li>
+                    <li role="presentation" class="active"><a href= "{{ url_for('index')}}" >Home</a></li>
+                    <li role="presentation"><a href="{{ url_for('about') }}">About</a></li>
+                <li role="presentation"><a href="{{ url_for('contact')}}">Contact</a></li>
                   </ul>
                 </nav>
                 <h3 class="text-muted">Intelligent News: News For You</h3>
@@ -68,7 +69,6 @@
 
 
     {% else %}      
-        <div class="p1">
         <span class="p2" style="text-align:center;">
             <strong>LOGIN</strong>
             </br>
@@ -78,7 +78,7 @@
             </br>
             </br>
             <p><a href="{{ url_for('oauth_authorize', provider='facebook') }}"><button class="button button1">Login with Facebook</button></a></p>
-            <p><a href="{{ url_for('oauth_authorize', provider='twitter') }}"><button class="button button2">Login with Twitter</button></a></p>
+            <p><a href="{{ url_for('oauth_authorize', provider='twitter') }}" ><button class="button button2">Login with Twitter</button></a></p>
                 </div>
         </span>
 

@@ -21,7 +21,7 @@ for id in x.top_stories(limit=6):
     i += 1
 """
 
-def processTopArticles(limit = 5):
+def processTopArticles(limit = 10):
     """ Grab top 6 articles and analyze their content
     """
     articleInsertList = []

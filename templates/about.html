@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='styles/styles.css')}}"> 
+    </head>
+    <body>
+    <h1 class="h1">Intelligent  News</h1>
+    <meta charset="utf-8">
+        <meta name="description" content="Intelligent News: Finding Articles that Matter to You">
+        <title>Intelligent News</title>
+        
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+
+    
+    
+
+        <div class="container">
+              <div class="header">
+                <nav>
+                  <ul class="nav nav-pills pull-right">
+                    <li role="presentation" class="active"><a href="{{ url_for('index') }}">Home</a></li>
+                    <li role="presentation"><a href="{{ url_for('about')}}">About</a></li>
+                <li role="presentation"><a href="{{url_for('contact')}}">Contact</a></li>
+                  </ul>
+                </nav>
+                <h3 class="text-muted">Intelligent News: News For You</h3>
+        </div>
+
+        {% for message in get_flashed_messages() %}
+            <p><b>Message</b>: {{ message | safe }}</p>
+        {% endfor %}
+        {% if current_user.is_authenticated %}
+            <h3>Hi, {{ current_user.nickname }}!</h3>
+            <p><left><a href="{{ url_for('logout') }}">Logout</a><left></p>
+        {% endif %}
+        <h3> <font color = "blue"><strong>IntelligentNews:</strong>This app provides users with a tool to scan Hacker News anline articles and presents the users with a news feed of relevant articles and posts based on their preferences.</font></h3>
+
+    </body>
+</html>
